@@ -1,0 +1,40 @@
+<html><head><link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/ace-widget/ace-widget.html">
+<link rel="import" href="../../scripts/parser.html">
+
+</head><body><dom-module id="gobstones-editor">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+        height: 100%;
+      }
+
+      ace-widget {
+        height: 100%;
+        --ace-widget-editor:{
+          height: 100% !important;
+          font: var(--editor-size)/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace !important;
+          @apply(--gobstones-editor);
+        }
+      }
+
+      .run-button {
+        position: absolute;
+        bottom: 30px;
+        right: 24px;
+      }
+    </style>
+
+    <ace-widget id="ace" mode="ace/mode/gobstones" theme="ace/theme/chrome" font-size="5" tab-size="4" maxlines="30" initial-focus="">program { Poner(Rojo) }</ace-widget>
+    <!-- // TODO: Ese maxlines está causando el bug de las 30 líneas (30 es el default) -->
+
+    <paper-fab icon="av:play-arrow" class="run-button" on-click="onRunCode"></paper-fab>
+  </template>
+
+  </dom-module>
+<script src="gobstones-editor.js"></script></body></html>
