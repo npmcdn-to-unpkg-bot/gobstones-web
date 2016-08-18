@@ -13,7 +13,7 @@ Polymer({
   },
 
   attached: function attached() {
-    this.loadResources(this.resolveUrl("../locales.json"));
+    this.loadResources(this.resolveUrl("../../locales.json"));
   },
 
   ready: function ready() {
