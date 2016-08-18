@@ -13,6 +13,10 @@ Polymer({
     this.HOP_SIZE = 3;
   },
 
+  togglePanel: function togglePanel() {
+    $("paper-drawer-panel")[0].togglePanel();
+  },
+
   moreSize: function moreSize() {
     this.editorSize += this.HOP_SIZE;
     this._updateSize();

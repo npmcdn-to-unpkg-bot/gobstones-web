@@ -7,42 +7,60 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Stylist = function () {
   function Stylist() {
     _classCallCheck(this, Stylist);
+
+    this.DEFAULT_PERCENTAGE = 0.6;
+    this.INITIAL_SCALE = 1;
   }
 
   _createClass(Stylist, [{
     key: "setPanelAsResizable",
-    value: function setPanelAsResizable(cssClass) {
+    value: function setPanelAsResizable(panelCssClass, boardCssClass) {
+      var _this = this;
+
       $(document).ready(function () {
-        $(cssClass).resizable({
+        $(panelCssClass).resizable({
           resizeHeight: false
         });
 
         setTimeout(function () {
-          $(cssClass + " .ui-resizable-s").hide();
-          $(cssClass + " .ui-resizable-se").hide();
+          $(panelCssClass + " .ui-resizable-s").hide();
+          $(panelCssClass + " .ui-resizable-se").hide();
+
+          _this.scaleBoard(_this.DEFAULT_PERCENTAGE);
         }, 0);
       });
 
-      this.keepAspectRatioOnWindowResize(cssClass);
+      this.beResponsive(panelCssClass, boardCssClass);
     }
   }, {
-    key: "keepAspectRatioOnWindowResize",
-    value: function keepAspectRatioOnWindowResize(cssClass) {
-      var _this = this;
+    key: "beResponsive",
+    value: function beResponsive(panelCssClass, boardCssClass) {
+      var _this2 = this;
 
       $(window).resize(function () {
+        // keep aspect ratio on window resize:
         var documentWidth = $(document).width();
-        if (!_this.lastSize) {
-          _this.lastSize = documentWidth;
+        if (!_this2.lastSize) {
+          _this2.lastSize = documentWidth;
           return;
         }
 
-        var leftPanel = $(cssClass);
-        var percentage = leftPanel.width() / _this.lastSize;
+        var leftPanel = $(panelCssClass);
+        var percentage = leftPanel.width() / _this2.lastSize;
 
         leftPanel.width(percentage * documentWidth);
-        _this.lastSize = documentWidth;
+        _this2.lastSize = documentWidth;
+
+        // adapt board size to panel:
+        // // TODO: this.scaleBoard(percentage, boardCssClass);
       });
+    }
+  }, {
+    key: "scaleBoard",
+    value: function scaleBoard(percentage, boardCssClass) {
+      var scaleDiff = -(percentage / this.DEFAULT_PERCENTAGE) + 1;
+      var scale = this.INITIAL_SCALE + scaleDiff;
+      $(".gbs_board").css("transform", "scale(" + scale + ")");
     }
   }]);
 

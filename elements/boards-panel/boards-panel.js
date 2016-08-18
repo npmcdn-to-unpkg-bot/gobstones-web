@@ -2,12 +2,18 @@
 
 Polymer({
   is: 'boards-panel',
+  behaviors: [Polymer.AppLocalizeBehavior],
   properties: {
     finalState: Object,
-    error: Object
+    error: Object,
+    language: { value: "es" }
   },
   listeners: {
     "board-changed": "_clean"
+  },
+
+  attached: function attached() {
+    this.loadResources(this.resolveUrl("../../locales/locales.json"));
   },
 
   ready: function ready() {
@@ -54,7 +60,7 @@ Polymer({
   },
 
   _onCompilationError: function _onCompilationError(error) {
-    this._showToast("El programa tiene errores");
+    this._showToast(this.localize("the-program-has-errors"));
   },
 
   _onExecutionError: function _onExecutionError(error) {
