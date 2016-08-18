@@ -12,7 +12,6 @@ Polymer({
     var _this = this;
 
     this._subscribeToBoards("initial-state", function (eventInfo) {
-      console.log("EVENT INFO ", eventInfo);
       _this._runCode(eventInfo.detail);
     });
 

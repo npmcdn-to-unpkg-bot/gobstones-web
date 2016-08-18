@@ -13,7 +13,7 @@ Polymer({
   ready: function ready() {
     var _this = this;
 
-    this._setResizablePanels();
+    new Stylist().setPanelAsResizable(".panel-left");
 
     this._adapter = new ParserAndBoardAdapter();
 
@@ -87,18 +87,5 @@ Polymer({
       document.querySelector("#editor").addEventListener(eventName, handler);
     });
     return this;
-  },
-
-  _setResizablePanels: function _setResizablePanels() {
-    $(document).ready(function () {
-      $(".panel-left").resizable({
-        resizeHeight: false
-      });
-
-      setTimeout(function () {
-        $(".panel-left .ui-resizable-s").hide();
-        $(".panel-left .ui-resizable-se").hide();
-      }, 0);
-    });
   }
 });
