@@ -4,6 +4,10 @@ Polymer({
   is: 'boards-panel',
   behaviors: [Polymer.AppLocalizeBehavior],
   properties: {
+    selectedTab: {
+      type: Number,
+      value: 0
+    },
     finalState: Object,
     error: Object,
     language: { value: "es" }
@@ -19,7 +23,7 @@ Polymer({
   ready: function ready() {
     var _this = this;
 
-    new Stylist().setPanelAsResizable(".panel-left");
+    new Stylist().setPanelAsResizable(".panel-left", ".board");
 
     this._adapter = new ParserAndBoardAdapter();
 
@@ -38,10 +42,20 @@ Polymer({
     });
   },
 
+  isInitialBoardSelected: function isInitialBoardSelected(selectedTab) {
+    return selectedTab === 0;
+  },
+  isFinalBoardSelected: function isFinalBoardSelected(selectedTab) {
+    return selectedTab === 1;
+  },
+  isFinalBoardVisible: function isFinalBoardVisible(finalState, error) {
+    return finalState || error;
+  },
+
   _onRunRequest: function _onRunRequest() {
     this._clean();
 
-    var initialStateEditor = this.$.initialStateEditor;
+    var initialStateEditor = this.$$("#initialStateEditor");
     var initialState = {
       header: initialStateEditor.header,
       table: this._adapter.adaptToParser(initialStateEditor.table),
@@ -65,18 +79,21 @@ Polymer({
 
   _onExecutionError: function _onExecutionError(error) {
     this.error = error;
+    this.selectedTab = 1;
   },
 
   _setFinalState: function _setFinalState(finalState) {
     this.finalState = null;
     this.async(function () {
       this.finalState = finalState;
+      this.selectedTab = 1;
     });
   },
 
   _clean: function _clean() {
     this.finalState = null;
     this.error = null;
+    this.selectedTab = 0;
   },
 
   _showToast: function _showToast(message) {
