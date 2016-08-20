@@ -18984,7 +18984,7 @@ var Parser = function () {
     <style>
       :host {
         display: block;
-        height: 100%;
+        height: 100vh;
       }
 
       ace-widget {
@@ -21825,9 +21825,7 @@ e=!1,s=!1,i=!1;var o=t.ui.keyCode;switch(n.keyCode){case o.PAGE_UP:e=!0,this._mo
           };
         })(this)).on("resize", (function(_this) {
           return function(event, resize) {
-            _this._onResize(resize);
-            _this.fire("board-resize");
-            return event.stopPropagation();
+            return _this._onResize(resize);
           };
         })(this)).on("resizestop", (function(_this) {
           return function(event, resize) {
@@ -22054,7 +22052,9 @@ var Stylist = function () {
         margin-left: -10px;
         margin-top: -10px;
         border-left: solid 1px;
-        border-color: #688998
+        border-color: #688998;
+
+        z-index: 10;
       }
     </style>
 
@@ -22214,10 +22214,11 @@ Polymer({
   <template>
 
     <style>
-      .size-buttons {
-        position: absolute;
-        right: 13px;
+      ::host {
+        z-index: 10;
+      }
 
+      .size-buttons {
         -webkit-touch-callout: none;
         -webkit-user-select: none;
         -khtml-user-select: none;
@@ -22277,9 +22278,9 @@ Polymer({
       
 
       
-      <div class="middle middle-container">
+      <div class="middle middle-container" style="width: 100%">
         <img class="app-logo" src="../images/logo.png">
-        <div class="app-name">Gobstones</div>
+        <div class="app-name" style="width: 90%">Gobstones</div>
 
         <div class="size-buttons">
           <paper-button on-click="moreSize"><span class="size-button" on-click="">▲</span></paper-button>
