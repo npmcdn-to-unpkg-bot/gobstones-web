@@ -8,6 +8,10 @@ Polymer({
       type: Number,
       value: 0
     },
+    showCode: {
+      type: Boolean,
+      value: true
+    },
     finalState: Object,
     error: Object,
     language: { value: "es" }
@@ -40,6 +44,16 @@ Polymer({
     })._subscribeToEditor("editor-dirty", function () {
       _this._clean();
     });
+  },
+
+  toggleShowCode: function toggleShowCode() {
+    this.showCode = !this.showCode;
+    this.fire("show-code-changed", this.showCode);
+  },
+
+  buttonCssClass: function buttonCssClass(element) {
+    if (!this.domHost) return;
+    return this.domHost.buttonCssClass(element);
   },
 
   isInitialBoardSelected: function isInitialBoardSelected(selectedTab) {

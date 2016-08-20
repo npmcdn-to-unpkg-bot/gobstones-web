@@ -6,6 +6,10 @@ Polymer({
     editorSize: {
       type: Number,
       value: 12
+    },
+    showBoards: {
+      type: Boolean,
+      value: true
     }
   },
 
@@ -15,6 +19,16 @@ Polymer({
 
   togglePanel: function togglePanel() {
     $("paper-drawer-panel")[0].togglePanel();
+  },
+
+  toggleShowBoards: function toggleShowBoards() {
+    this.showBoards = !this.showBoards;
+    this.fire("show-boards-changed", this.showBoards);
+  },
+
+  buttonCssClass: function buttonCssClass(element) {
+    if (!this.domHost) return;
+    return this.domHost.buttonCssClass(element);
   },
 
   moreSize: function moreSize() {
