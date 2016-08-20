@@ -62,10 +62,11 @@ var Stylist = function () {
   }, {
     key: "scaleAndCenterBoard",
     value: function scaleAndCenterBoard(percentage, boardCssClass) {
-      var scaleDiff = -(percentage / this.DEFAULT_PERCENTAGE) + 1;
-      var scale = this.INITIAL_SCALE + scaleDiff;
-      $(boardCssClass).css("transform", "scale(" + scale + ")");
-      this.centerBoardVertically(scale, boardCssClass);
+      // Disabled for now
+      // const scaleDiff = -(percentage / this.DEFAULT_PERCENTAGE) + 1
+      // const scale = this.INITIAL_SCALE + scaleDiff;
+      // $(boardCssClass).css("transform", `scale(${scale})`);
+      this.centerBoardVertically(1, boardCssClass);
     }
   }, {
     key: "centerBoardVertically",
