@@ -1,0 +1,45 @@
+<html><head><link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+
+</head><body><dom-module id="left-menu">
+  <template>
+
+    <style>
+      .title {
+        text-align: center;
+      }
+
+      .actions {
+        margin-left: 5px;
+      }
+
+      .action {
+        margin-bottom: 10px;
+      }
+
+      .action-text {
+        vertical-align: middle;
+      }
+    </style>
+
+    <h1 class="title">[[localize("actions")]]</h1>
+
+    <div class="actions">
+      <div class="clickable action">
+        <paper-button on-click="saveProgram">
+          <iron-icon icon="icons:save"></iron-icon> <span class="action-text">[[localize("save")]]</span>
+        </paper-button>
+      </div>
+
+      <!-- // TODO: Falta esta funcionalidad -->
+<!--       <div class="clickable action">
+        <paper-button on-click="loadProgram">
+          <iron-icon icon="icons:folder-open"></iron-icon> <span class="action-text">[[localize("open")]]</span>
+        </paper-button>
+      </div> -->
+    </div>
+  </template>
+
+  </dom-module>
+<script src="left-menu.js"></script></body></html>

@@ -4,6 +4,7 @@ Polymer({
   is: 'boards-panel',
   behaviors: [Polymer.AppLocalizeBehavior],
   properties: {
+    language: { value: "es" },
     sizeX: {
       type: Number,
       value: 4,
@@ -26,7 +27,6 @@ Polymer({
       type: Boolean,
       value: true
     },
-    language: { value: "es" },
     finalState: Object,
     error: Object
   },
