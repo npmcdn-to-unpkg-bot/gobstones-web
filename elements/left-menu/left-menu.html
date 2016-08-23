@@ -1,6 +1,7 @@
 <html><head><link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../../scripts/jquery.html">
 
 </head><body><dom-module id="left-menu">
   <template>
@@ -12,10 +13,6 @@
 
       .actions {
         margin-left: 5px;
-      }
-
-      .action {
-        margin-bottom: 10px;
       }
 
       .action-text {
@@ -32,12 +29,13 @@
         </paper-button>
       </div>
 
-      <!-- // TODO: Falta esta funcionalidad -->
-<!--       <div class="clickable action">
+      <input id="fileToOpen" type="file" accept=".gbs" on-change="onSelectFile" style="visibility:hidden">
+
+      <div class="clickable action">
         <paper-button on-click="loadProgram">
           <iron-icon icon="icons:folder-open"></iron-icon> <span class="action-text">[[localize("open")]]</span>
         </paper-button>
-      </div> -->
+      </div>
     </div>
   </template>
 

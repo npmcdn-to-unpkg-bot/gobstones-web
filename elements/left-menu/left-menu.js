@@ -12,13 +12,23 @@ Polymer({
   },
 
   saveProgram: function saveProgram() {
-    var editor = this._getEditor().editor;
-    var code = editor.getValue();
+    var code = this._getEditorElement().editor.getValue();
     this._saveFile(code, "program.gbs");
   },
 
   loadProgram: function loadProgram() {
-    alert("// TODO");
+    $("#fileToOpen").click();
+  },
+
+  onSelectFile: function onSelectFile(event) {
+    var _this = this;
+
+    this._readFile(event, function (code) {
+      var editorElement = _this._getEditorElement();
+      editorElement.editor.setValue(code);
+      editorElement.onRunCode();
+      $("paper-drawer-panel")[0].togglePanel();
+    });
   },
 
   _saveFile: function _saveFile(content, name) {
@@ -29,7 +39,18 @@ Polymer({
     a.click();
   },
 
-  _getEditor: function _getEditor() {
+  _readFile: function _readFile(event, callback) {
+    var input = event.target;
+
+    var reader = new FileReader();
+    reader.onload = function () {
+      var content = reader.result;
+      callback(content);
+    };
+    reader.readAsText(input.files[0]);
+  },
+
+  _getEditorElement: function _getEditorElement() {
     return document.querySelector("#editor");
   }
 });
