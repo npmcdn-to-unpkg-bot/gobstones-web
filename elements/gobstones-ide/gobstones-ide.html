@@ -8,14 +8,12 @@
     </style>
 
     <div class="panel-container">
-      <template is="dom-if" if="{{showCode}}">
-        <div class="panel-left">
-          <editor-toolbar></editor-toolbar>
+      <div class="panel-left">
+        <editor-toolbar></editor-toolbar>
 
-          <!-- // TODO: Se supone que tiene que aparecer en el ACE 'Editable code here'? El editor debería soportar recibir código inicial (útil para la futura carga de archivos) -->
-          <gobstones-editor id="editor" class="gobstones-editor">Editable code here</gobstones-editor>
-        </div>
-      </template>
+        <!-- // TODO: Se supone que tiene que aparecer en el ACE 'Editable code here'? El editor debería soportar recibir código inicial (útil para la futura carga de archivos) -->
+        <gobstones-editor id="editor" class="gobstones-editor">Editable code here</gobstones-editor>
+      </div>
 
       <div class="panel-right">
         <boards-panel id="boards"></boards-panel>
