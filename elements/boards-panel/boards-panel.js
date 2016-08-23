@@ -142,6 +142,15 @@ Polymer({
   },
 
   _updateSize: function _updateSize() {
+    if (this.sizeX === "") {
+      this.$$("#initialStateEditor").header.x = 0;
+      return this.sizeX = 1;
+    }
+    if (this.sizeY === "") {
+      this.$$("#initialStateEditor").header.y = 0;
+      return this.sizeX = 1;
+    }
+
     var limit = function limit(n) {
       return Math.max(Math.min(n, 30), 1);
     };
