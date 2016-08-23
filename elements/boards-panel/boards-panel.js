@@ -148,7 +148,7 @@ Polymer({
     }
     if (this.sizeY === "") {
       this.$$("#initialStateEditor").header.y = 0;
-      return this.sizeX = 1;
+      return this.sizeY = 1;
     }
 
     var limit = function limit(n) {
