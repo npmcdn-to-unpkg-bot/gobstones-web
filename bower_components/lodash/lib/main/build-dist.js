@@ -18,7 +18,6 @@ var baseLodash = path.join(basePath, filename),
 /**
  * Creates browser builds of Lodash at the `target` path.
  *
- * @private
  * @param {string} target The output directory path.
  */
 function build() {

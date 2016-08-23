@@ -23,7 +23,6 @@ var templateData = {
  * Converts arranged argument `indexes` into a named argument string
  * representation of their order.
  *
- * @private
  * @param {number[]} indexes The arranged argument indexes.
  * @returns {string} Returns the named argument string.
  */
@@ -38,7 +37,6 @@ function toArgOrder(indexes) {
 /**
  * Converts `funcNames` into a chunked list string representation.
  *
- * @private
  * @param {string[]} funcNames The function names.
  * @returns {string} Returns the function list string.
  */
@@ -70,7 +68,6 @@ function toFuncList(funcNames) {
 /**
  * Creates the FP-Guide wiki at the `target` path.
  *
- * @private
  * @param {string} target The output file path.
  */
 function build(target) {

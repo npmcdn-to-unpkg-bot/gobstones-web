@@ -4,6 +4,20 @@ Polymer({
   is: 'boards-panel',
   behaviors: [Polymer.AppLocalizeBehavior],
   properties: {
+    sizeX: {
+      type: Number,
+      value: 4,
+      observer: "_updateSize"
+    },
+    sizeY: {
+      type: Number,
+      value: 4,
+      observer: "_updateSize"
+    },
+    size: {
+      type: Object,
+      computed: '_computeSize(sizeX, sizeY)'
+    },
     selectedTab: {
       type: Number,
       value: 0
@@ -12,9 +26,9 @@ Polymer({
       type: Boolean,
       value: true
     },
+    language: { value: "es" },
     finalState: Object,
-    error: Object,
-    language: { value: "es" }
+    error: Object
   },
   listeners: {
     "board-changed": "_clean"
@@ -27,7 +41,8 @@ Polymer({
   ready: function ready() {
     var _this = this;
 
-    new Stylist().setPanelAsResizable(".panel-left", ".board");
+    this.stylist = new Stylist();
+    this.stylist.setPanelAsResizable(this.size);
 
     this._adapter = new ParserAndBoardAdapter();
 
@@ -124,5 +139,18 @@ Polymer({
       document.querySelector("#editor").addEventListener(eventName, handler);
     });
     return this;
+  },
+
+  _updateSize: function _updateSize() {
+    var limit = function limit(n) {
+      return Math.max(Math.min(n, 30), 1);
+    };
+    if (this.sizeX) this.sizeX = limit(this.sizeX);
+    if (this.sizeY) this.sizeY = limit(this.sizeY);
+    if (this.stylist) this.stylist.updateBoardSize(this.size);
+  },
+
+  _computeSize: function _computeSize(sizeX, sizeY) {
+    return { x: sizeX, y: sizeY };
   }
 });

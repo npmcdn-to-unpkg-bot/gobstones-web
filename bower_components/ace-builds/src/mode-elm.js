@@ -112,8 +112,6 @@ var ElmHighlightRules = function() {
             token: "string.end",
             regex: '"',
             next: "start"
-        }, {
-            defaultToken: "string"
         }],
         stringGap: [{
             token: "text",

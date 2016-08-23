@@ -46,7 +46,6 @@ var ignored = [
 /**
  * Checks if `name` is a method alias.
  *
- * @private
  * @param {string} name The name to check.
  * @returns {boolean} Returns `true` if `name` is a method alias, else `false`.
  */
@@ -57,7 +56,6 @@ function isAlias(name) {
 /**
  * Checks if `name` is a category name.
  *
- * @private
  * @param {string} name The name to check.
  * @returns {boolean} Returns `true` if `name` is a category name, else `false`.
  */
@@ -68,7 +66,6 @@ function isCategory(name) {
 /**
  * Checks if `name` belongs to a method that's passed thru and not wrapped.
  *
- * @private
  * @param {string} name The name to check.
  * @returns {boolean} Returns `true` if `name` is of a pass thru method,
  *  else `false`.
@@ -107,7 +104,6 @@ function getTemplate(moduleName) {
 /**
  * Creates FP modules at the `target` path.
  *
- * @private
  * @param {string} target The output directory path.
  */
 function build(target) {

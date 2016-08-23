@@ -21,7 +21,6 @@ var filePairs = [
 /**
  * Creates supplementary Lodash modules at the `target` path.
  *
- * @private
  * @param {string} target The output directory path.
  */
 function build(target) {

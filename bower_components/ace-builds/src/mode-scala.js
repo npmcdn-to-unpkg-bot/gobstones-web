@@ -926,11 +926,12 @@ var ScalaHighlightRules = function() {
         ],
         "tstring" : [
             {
-                token : "string",
+                token : "string", // closing comment
                 regex : '"{3,5}',
                 next : "start"
             }, {
-                defaultToken : "string"
+                token : "string", // comment spanning whole line
+                regex : ".+?"
             }
         ]
     };
