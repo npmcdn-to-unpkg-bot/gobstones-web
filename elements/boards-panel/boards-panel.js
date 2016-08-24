@@ -12,12 +12,12 @@ Polymer({
     },
     sizeY: {
       type: Number,
-      value: 4,
-      observer: "_updateSize"
+      value: 4
     },
     size: {
       type: Object,
-      computed: '_computeSize(sizeX, sizeY)'
+      computed: "_computeSize(sizeX, sizeY)",
+      observer: "_updateSize"
     },
     selectedTab: {
       type: Number,
@@ -141,19 +141,19 @@ Polymer({
     return this;
   },
 
-  _updateSize: function _updateSize() {
-    if (this.sizeX) this.sizeX = this._limitSize(this.sizeX);
-    if (this.sizeY) this.sizeY = this._limitSize(this.sizeY);
-    if (this.stylist) this.stylist.updateBoardSize(this.size);
-  },
-
   _computeSize: function _computeSize(sizeX, sizeY) {
-    var x = sizeX === "" ? this.size.x : sizeX;
-    var y = sizeY === "" ? this.size.y : sizeY;
+    var x = sizeX === "" ? this.size.x : this._limitSize(sizeX);
+    var y = sizeY === "" ? this.size.y : this._limitSize(sizeY);
+    if (sizeX !== "") this.sizeX = x;
+    if (sizeY !== "") this.sizeY = y;
     return { x: x, y: y };
   },
 
   _limitSize: function _limitSize(n) {
     return Math.max(Math.min(n, 30), 1);
+  },
+
+  _updateSize: function _updateSize() {
+    if (this.stylist) this.stylist.updateBoardSize(this.size);
   }
 });
