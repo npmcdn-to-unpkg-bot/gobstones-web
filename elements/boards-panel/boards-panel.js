@@ -142,24 +142,18 @@ Polymer({
   },
 
   _updateSize: function _updateSize() {
-    if (this.sizeX === "") {
-      this.$$("#initialStateEditor").header.x = 0;
-      return this.sizeX = 1;
-    }
-    if (this.sizeY === "") {
-      this.$$("#initialStateEditor").header.y = 0;
-      return this.sizeY = 1;
-    }
-
-    var limit = function limit(n) {
-      return Math.max(Math.min(n, 30), 1);
-    };
-    if (this.sizeX) this.sizeX = limit(this.sizeX);
-    if (this.sizeY) this.sizeY = limit(this.sizeY);
+    if (this.sizeX) this.sizeX = this._limitSize(this.sizeX);
+    if (this.sizeY) this.sizeY = this._limitSize(this.sizeY);
     if (this.stylist) this.stylist.updateBoardSize(this.size);
   },
 
   _computeSize: function _computeSize(sizeX, sizeY) {
-    return { x: sizeX, y: sizeY };
+    var x = sizeX === "" ? this.size.x : sizeX;
+    var y = sizeY === "" ? this.size.y : sizeY;
+    return { x: x, y: y };
+  },
+
+  _limitSize: function _limitSize(n) {
+    return Math.max(Math.min(n, 30), 1);
   }
 });
