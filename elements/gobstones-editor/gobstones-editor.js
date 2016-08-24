@@ -2,9 +2,7 @@
 
 Polymer({
   is: "gobstones-editor",
-
   listeners: {
-    "ace.editor-ready": "onAceReady",
     "ace.editor-content": "onContentChange"
   },
 
@@ -20,10 +18,8 @@ Polymer({
 
     this._setFatalities();
     this._subscribeToChangeEvents();
-  },
 
-  onAceReady: function onAceReady() {
-    this.$.ace.editor.$blockScrolling = Infinity;
+    new Stylist().correctEditorHeight(this.editor);
   },
 
   onContentChange: function onContentChange(content) {

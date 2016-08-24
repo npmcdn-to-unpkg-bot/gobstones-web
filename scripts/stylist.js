@@ -9,7 +9,8 @@ var Stylist = function () {
     _classCallCheck(this, Stylist);
 
     this.DEFAULT_PERCENTAGE = 0.6;
-    this.TOOLBAR_HEIGHT = 102;
+    this.TOOLBAR_HEIGHT = 64;
+    this.TOOLBAR_AND_SIZE_SELECTOR_HEIGHT = this.TOOLBAR_HEIGHT + 38;
     this.CELL_SIZE = 59;
     this.BOARD_CSS_CLASS = ".theBoard";
     this.BOARD_CONTAINER_CSS_CLASS = ".theBoardContainer";
@@ -19,22 +20,39 @@ var Stylist = function () {
   }
 
   _createClass(Stylist, [{
-    key: "setPanelAsResizable",
-    value: function setPanelAsResizable(boardDimensions) {
+    key: "correctEditorHeight",
+    value: function correctEditorHeight(editor) {
       var _this = this;
 
-      $(document).ready(function () {
-        _this._makeResizable();
-        setTimeout(function () {
-          $(_this.LEFT_PANEL_CSS_CLASS + " .ui-resizable-s").hide();
-          $(_this.LEFT_PANEL_CSS_CLASS + " .ui-resizable-se").hide();
+      var fixHeight = function fixHeight() {
+        var lineHeight = editor.renderer.lineHeight;
 
-          _this.updateBoardSize(boardDimensions);
+        var availableLines = ($(document).height() - _this.TOOLBAR_HEIGHT) / editor.renderer.lineHeight;
+        console.log("availableLines", availableLines);
+        editor.setOption("minLines", availableLines);
+        editor.setOption("maxLines", availableLines);
+      };
+
+      setTimeout(fixHeight);
+      $(window).resize(fixHeight);
+    }
+  }, {
+    key: "setPanelAsResizable",
+    value: function setPanelAsResizable(boardDimensions) {
+      var _this2 = this;
+
+      $(document).ready(function () {
+        _this2._makeResizable();
+        setTimeout(function () {
+          $(_this2.LEFT_PANEL_CSS_CLASS + " .ui-resizable-s").hide();
+          $(_this2.LEFT_PANEL_CSS_CLASS + " .ui-resizable-se").hide();
+
+          _this2.updateBoardSize(boardDimensions);
         }, 0);
       });
 
       $(window).resize(function () {
-        _this._beResponsive();
+        _this2._beResponsive();
       });
     }
   }, {
@@ -127,7 +145,7 @@ var Stylist = function () {
   }, {
     key: "_getRightPanelHeight",
     value: function _getRightPanelHeight() {
-      return $(document).height() - this.TOOLBAR_HEIGHT - this.BOARD_CONTAINER_VERTICAL_MARGIN;
+      return $(document).height() - this.TOOLBAR_AND_SIZE_SELECTOR_HEIGHT - this.BOARD_CONTAINER_VERTICAL_MARGIN;
     }
   }, {
     key: "_getScale",
