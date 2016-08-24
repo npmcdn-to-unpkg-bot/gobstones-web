@@ -20563,6 +20563,184 @@ Polymer({
     });
   </script>
 </dom-module>
+
+<dom-module id="iron-localstorage" assetpath="../bower_components/iron-localstorage/"></dom-module>
+<script>
+
+  Polymer({
+    is: 'iron-localstorage',
+
+    properties: {
+      /**
+       * localStorage item key
+       */
+      name: {
+        type: String,
+        value: ''
+      },
+      /**
+       * The data associated with this storage.
+       * If set to null item will be deleted.
+       * @type {*}
+       */
+      value: {
+        type: Object,
+        notify: true
+      },
+
+      /**
+       * If true: do not convert value to JSON on save/load
+       */
+      useRaw: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Value will not be saved automatically if true. You'll have to do it manually with `save()`
+       */
+      autoSaveDisabled: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Last error encountered while saving/loading items
+       */
+      errorMessage: {
+        type: String,
+        notify: true
+      },
+
+      /** True if value has been loaded */
+      _loaded: {
+        type: Boolean,
+        value: false
+      }
+    },
+
+    observers: [
+      '_debounceReload(name,useRaw)',
+      '_trySaveValue(autoSaveDisabled)',
+      '_trySaveValue(value.*)'
+    ],
+
+    ready: function() {
+      this._boundHandleStorage = this._handleStorage.bind(this);
+    },
+
+    attached: function() {
+      window.addEventListener('storage', this._boundHandleStorage);
+    },
+
+    detached: function() {
+      window.removeEventListener('storage', this._boundHandleStorage);
+    },
+
+    _handleStorage: function(ev) {
+      if (ev.key == this.name) {
+        this._load(true);
+      }
+    },
+
+    _trySaveValue: function() {
+      if (this._doNotSave) {
+        return;
+      }
+      if (this._loaded && !this.autoSaveDisabled) {
+        this.debounce('save', this.save);
+      }
+    },
+
+    _debounceReload: function() {
+      this.debounce('reload', this.reload);
+    },
+
+    /**
+     * Loads the value again. Use if you modify
+     * localStorage using DOM calls, and want to
+     * keep this element in sync.
+     */
+    reload: function() {
+      this._loaded = false;
+      this._load();
+    },
+
+    /**
+     * loads value from local storage
+     * @param {boolean=} externalChange true if loading changes from a different window
+     */
+    _load: function(externalChange) {
+      try {
+        var v = window.localStorage.getItem(this.name);
+      } catch (ex) {
+        this.errorMessage = ex.message;
+
+        this._error("Could not save to localStorage.  Try enabling cookies for this page.", ex);
+      };
+
+      if (v === null) {
+        this._loaded = true;
+        this._doNotSave = true;  // guard for save watchers
+        this.value = null;
+        this._doNotSave = false;
+        this.fire('iron-localstorage-load-empty', { externalChange: externalChange});
+      } else {
+        if (!this.useRaw) {
+          try { // parse value as JSON
+            v = JSON.parse(v);
+          } catch(x) {
+            this.errorMessage = "Could not parse local storage value";
+            Polymer.Base._error("could not parse local storage value", v);
+            v = null;
+          }
+        }
+        this._loaded = true;
+        this._doNotSave = true;
+        this.value = v;
+        this._doNotSave = false;
+        this.fire('iron-localstorage-load', { externalChange: externalChange});
+      }
+    },
+
+    /**
+     * Saves the value to localStorage. Call to save if autoSaveDisabled is set.
+     * If `value` is null or undefined, deletes localStorage.
+     */
+    save: function() {
+      var v = this.useRaw ? this.value : JSON.stringify(this.value);
+      try {
+        if (this.value === null || this.value === undefined) {
+          window.localStorage.removeItem(this.name);
+        } else {
+          window.localStorage.setItem(this.name, /** @type {string} */ (v));
+        }
+      }
+      catch(ex) {
+        // Happens in Safari incognito mode,
+        this.errorMessage = ex.message;
+        Polymer.Base._error("Could not save to localStorage. Incognito mode may be blocking this action", ex);
+      }
+    }
+
+    /**
+     * Fired when value loads from localStorage.
+     *
+     * @event iron-localstorage-load
+     * @param {{externalChange:boolean}} detail -
+     *     externalChange: true if change occured in different window.
+     */
+
+    /**
+     * Fired when loaded value does not exist.
+     * Event handler can be used to initialize default value.
+     *
+     * @event iron-localstorage-load-empty
+     * @param {{externalChange:boolean}} detail -
+     *     externalChange: true if change occured in different window.
+     */
+  });
+
+</script>
 <script type="text/javascript" charset="utf-8" src="https://npmcdn.com/gs-weblang-core@0.4.0/umd/index.umd.js"></script> 
 <script>"use strict";
 
@@ -20803,9 +20981,11 @@ var Stylist = function () {
       }
     </style>
 
-    <ace-widget id="ace" mode="ace/mode/gobstones" theme="ace/theme/chrome" font-size="5" tab-size="4" minlines="30" maxlines="30" initial-focus="">program { Poner(Rojo) }</ace-widget>
+    <iron-localstorage id="localStorage" name="last-code" value="{{code}}" use-raw="" auto-save-disabled=""></iron-localstorage>
 
-    <paper-fab icon="av:play-arrow" class="run-button" on-click="onRunCode"></paper-fab>
+    <ace-widget id="ace" mode="ace/mode/gobstones" theme="ace/theme/chrome" font-size="5" tab-size="4" minlines="30" maxlines="30" initial-focus=""></ace-widget>
+
+    <paper-fab style="z-index: 999;" icon="av:play-arrow" class="run-button" on-click="onRunCode"></paper-fab>
   </template>
 
   </dom-module>
@@ -20814,7 +20994,11 @@ var Stylist = function () {
 Polymer({
   is: "gobstones-editor",
   listeners: {
-    "ace.editor-content": "onContentChange"
+    "ace.editor-content": "onContentChange",
+    "iron-localstorage-load": "onLastCodeLoaded"
+  },
+  properties: {
+    code: String
   },
 
   ready: function ready() {
@@ -20838,7 +21022,12 @@ Polymer({
   },
 
   onContentChange: function onContentChange(content) {
-    var value = content.detail.value;
+    this.code = content.detail.value;
+    this.$.localStorage.save();
+  },
+
+  onLastCodeLoaded: function onLastCodeLoaded() {
+    this.editor.setValue(this.code);
   },
 
   onRunCode: function onRunCode() {

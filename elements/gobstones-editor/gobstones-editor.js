@@ -3,7 +3,11 @@
 Polymer({
   is: "gobstones-editor",
   listeners: {
-    "ace.editor-content": "onContentChange"
+    "ace.editor-content": "onContentChange",
+    "iron-localstorage-load": "onLastCodeLoaded"
+  },
+  properties: {
+    code: String
   },
 
   ready: function ready() {
@@ -27,7 +31,12 @@ Polymer({
   },
 
   onContentChange: function onContentChange(content) {
-    var value = content.detail.value;
+    this.code = content.detail.value;
+    this.$.localStorage.save();
+  },
+
+  onLastCodeLoaded: function onLastCodeLoaded() {
+    this.editor.setValue(this.code);
   },
 
   onRunCode: function onRunCode() {
