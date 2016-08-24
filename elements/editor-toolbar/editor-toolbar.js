@@ -5,7 +5,7 @@ Polymer({
   properties: {
     editorSize: {
       type: Number,
-      value: 12
+      value: 14
     },
     showBoards: {
       type: Boolean,

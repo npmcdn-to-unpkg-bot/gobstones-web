@@ -22,37 +22,29 @@ var Stylist = function () {
   _createClass(Stylist, [{
     key: "correctEditorHeight",
     value: function correctEditorHeight(editor) {
-      var _this = this;
+      var lineHeight = editor.renderer.lineHeight;
+      var availableLines = ($(document).height() - this.TOOLBAR_HEIGHT) / editor.renderer.lineHeight;
 
-      var fixHeight = function fixHeight() {
-        var lineHeight = editor.renderer.lineHeight;
-
-        var availableLines = ($(document).height() - _this.TOOLBAR_HEIGHT) / editor.renderer.lineHeight;
-        console.log("availableLines", availableLines);
-        editor.setOption("minLines", availableLines);
-        editor.setOption("maxLines", availableLines);
-      };
-
-      setTimeout(fixHeight);
-      $(window).resize(fixHeight);
+      editor.setOption("minLines", availableLines);
+      editor.setOption("maxLines", availableLines);
     }
   }, {
     key: "setPanelAsResizable",
     value: function setPanelAsResizable(boardDimensions) {
-      var _this2 = this;
+      var _this = this;
 
       $(document).ready(function () {
-        _this2._makeResizable();
+        _this._makeResizable();
         setTimeout(function () {
-          $(_this2.LEFT_PANEL_CSS_CLASS + " .ui-resizable-s").hide();
-          $(_this2.LEFT_PANEL_CSS_CLASS + " .ui-resizable-se").hide();
+          $(_this.LEFT_PANEL_CSS_CLASS + " .ui-resizable-s").hide();
+          $(_this.LEFT_PANEL_CSS_CLASS + " .ui-resizable-se").hide();
 
-          _this2.updateBoardSize(boardDimensions);
+          _this.updateBoardSize(boardDimensions);
         }, 0);
       });
 
       $(window).resize(function () {
-        _this2._beResponsive();
+        _this._beResponsive();
       });
     }
   }, {

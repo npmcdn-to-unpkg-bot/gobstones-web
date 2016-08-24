@@ -20233,7 +20233,7 @@ Polymer({
   properties: {
     editorSize: {
       type: Number,
-      value: 12
+      value: 14
     },
     showBoards: {
       type: Boolean,
@@ -20645,37 +20645,29 @@ var Stylist = function () {
   _createClass(Stylist, [{
     key: "correctEditorHeight",
     value: function correctEditorHeight(editor) {
-      var _this = this;
+      var lineHeight = editor.renderer.lineHeight;
+      var availableLines = ($(document).height() - this.TOOLBAR_HEIGHT) / editor.renderer.lineHeight;
 
-      var fixHeight = function fixHeight() {
-        var lineHeight = editor.renderer.lineHeight;
-
-        var availableLines = ($(document).height() - _this.TOOLBAR_HEIGHT) / editor.renderer.lineHeight;
-        console.log("availableLines", availableLines);
-        editor.setOption("minLines", availableLines);
-        editor.setOption("maxLines", availableLines);
-      };
-
-      setTimeout(fixHeight);
-      $(window).resize(fixHeight);
+      editor.setOption("minLines", availableLines);
+      editor.setOption("maxLines", availableLines);
     }
   }, {
     key: "setPanelAsResizable",
     value: function setPanelAsResizable(boardDimensions) {
-      var _this2 = this;
+      var _this = this;
 
       $(document).ready(function () {
-        _this2._makeResizable();
+        _this._makeResizable();
         setTimeout(function () {
-          $(_this2.LEFT_PANEL_CSS_CLASS + " .ui-resizable-s").hide();
-          $(_this2.LEFT_PANEL_CSS_CLASS + " .ui-resizable-se").hide();
+          $(_this.LEFT_PANEL_CSS_CLASS + " .ui-resizable-s").hide();
+          $(_this.LEFT_PANEL_CSS_CLASS + " .ui-resizable-se").hide();
 
-          _this2.updateBoardSize(boardDimensions);
+          _this.updateBoardSize(boardDimensions);
         }, 0);
       });
 
       $(window).resize(function () {
-        _this2._beResponsive();
+        _this._beResponsive();
       });
     }
   }, {
@@ -20838,7 +20830,11 @@ Polymer({
     this._setFatalities();
     this._subscribeToChangeEvents();
 
-    new Stylist().correctEditorHeight(this.editor);
+    this.stylist = new Stylist();
+    this.setSize(14);
+    $(window).resize(function () {
+      _this._fixEditorHeight();
+    });
   },
 
   onContentChange: function onContentChange(content) {
@@ -20850,8 +20846,13 @@ Polymer({
   },
 
   setSize: function setSize(newSize) {
+    var _this2 = this;
+
     this.customStyle["--editor-size"] = newSize + "px";
     this.updateStyles();
+    setTimeout(function () {
+      _this2._fixEditorHeight();
+    }, 500);
   },
 
   _runCode: function _runCode(initialState) {
@@ -20912,25 +20913,29 @@ Polymer({
   },
 
   _subscribeToChangeEvents: function _subscribeToChangeEvents() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.editor.getSession().on("change", function () {
-      _this2.editor.getSession().setAnnotations([]);
-      _this2.fire("editor-dirty");
+      _this3.editor.getSession().setAnnotations([]);
+      _this3.fire("editor-dirty");
     });
   },
 
   _setFatalities: function _setFatalities() {
-    var _this3 = this;
+    var _this4 = this;
 
     var ace = this.$.ace;
     ace.editor.commands.addCommand({
       name: "run-code",
       bindKey: { win: "ctrl+enter", mac: "command+enter" },
       exec: function exec() {
-        _this3.onRunCode();
+        _this4.onRunCode();
       }
     });
+  },
+
+  _fixEditorHeight: function _fixEditorHeight() {
+    this.stylist.correctEditorHeight(this.editor);
   }
 });</script><script>
 

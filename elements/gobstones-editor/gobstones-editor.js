@@ -19,7 +19,11 @@ Polymer({
     this._setFatalities();
     this._subscribeToChangeEvents();
 
-    new Stylist().correctEditorHeight(this.editor);
+    this.stylist = new Stylist();
+    this.setSize(14);
+    $(window).resize(function () {
+      _this._fixEditorHeight();
+    });
   },
 
   onContentChange: function onContentChange(content) {
@@ -31,8 +35,13 @@ Polymer({
   },
 
   setSize: function setSize(newSize) {
+    var _this2 = this;
+
     this.customStyle["--editor-size"] = newSize + "px";
     this.updateStyles();
+    setTimeout(function () {
+      _this2._fixEditorHeight();
+    }, 500);
   },
 
   _runCode: function _runCode(initialState) {
@@ -93,24 +102,28 @@ Polymer({
   },
 
   _subscribeToChangeEvents: function _subscribeToChangeEvents() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.editor.getSession().on("change", function () {
-      _this2.editor.getSession().setAnnotations([]);
-      _this2.fire("editor-dirty");
+      _this3.editor.getSession().setAnnotations([]);
+      _this3.fire("editor-dirty");
     });
   },
 
   _setFatalities: function _setFatalities() {
-    var _this3 = this;
+    var _this4 = this;
 
     var ace = this.$.ace;
     ace.editor.commands.addCommand({
       name: "run-code",
       bindKey: { win: "ctrl+enter", mac: "command+enter" },
       exec: function exec() {
-        _this3.onRunCode();
+        _this4.onRunCode();
       }
     });
+  },
+
+  _fixEditorHeight: function _fixEditorHeight() {
+    this.stylist.correctEditorHeight(this.editor);
   }
 });
