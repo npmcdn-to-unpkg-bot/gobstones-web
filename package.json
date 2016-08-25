@@ -4,7 +4,6 @@
     "browser-sync": "^2.7.7",
     "connect-history-api-fallback": "^1.1.0",
     "del": "^2.0.2",
-    "electron": "^1.3.4",
     "es6-promise": "^3.1.2",
     "glob-all": "^3.0.1",
     "gulp": "^3.8.5",
@@ -32,7 +31,16 @@
     "vulcanize": ">= 1.4.2",
     "web-component-tester": "^4.0.0"
   },
-  "main": "offline.js",
+  "main": "index.html",
+  "window": {
+    "title": "Gobstones Web",
+    "width": "800",
+    "height": "600",
+    "min_width": "640",
+    "min_height": "480",
+    "icon": "favicon.ico",
+    "position": "center"
+  },
   "scripts": {
     "start": "gulp serve",
     "test": "gulp test:local"
