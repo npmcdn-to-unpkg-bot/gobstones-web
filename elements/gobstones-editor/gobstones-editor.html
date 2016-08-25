@@ -18,7 +18,7 @@
 
       ace-widget {
         height: 100%;
-        --ace-widget-editor:{
+        --ace-widget-editor: {
           font: var(--editor-size)/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace !important;
           @apply(--gobstones-editor);
         }
@@ -35,7 +35,7 @@
 
     <ace-widget id="ace" mode="ace/mode/gobstones" theme="ace/theme/chrome" font-size="5" tab-size="4" minlines="30" maxlines="30" initial-focus=""></ace-widget>
 
-    <paper-fab style="z-index: 999;" icon="av:play-arrow" class="run-button" on-click="onRunCode"></paper-fab>
+    <paper-fab style="z-index: 10;" icon="av:play-arrow" class="run-button" on-click="onRunCode"></paper-fab>
   </template>
 
   </dom-module>

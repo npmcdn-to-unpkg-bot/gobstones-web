@@ -20968,7 +20968,7 @@ var Stylist = function () {
 
       ace-widget {
         height: 100%;
-        --ace-widget-editor:{
+        --ace-widget-editor: {
           font: var(--editor-size)/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace !important;
           @apply(--gobstones-editor);
         }
@@ -20985,7 +20985,7 @@ var Stylist = function () {
 
     <ace-widget id="ace" mode="ace/mode/gobstones" theme="ace/theme/chrome" font-size="5" tab-size="4" minlines="30" maxlines="30" initial-focus=""></ace-widget>
 
-    <paper-fab style="z-index: 999;" icon="av:play-arrow" class="run-button" on-click="onRunCode"></paper-fab>
+    <paper-fab style="z-index: 10;" icon="av:play-arrow" class="run-button" on-click="onRunCode"></paper-fab>
   </template>
 
   </dom-module>
@@ -21081,10 +21081,10 @@ Polymer({
       return this.parser.interpret(ast, initialState);
     } catch (e) {
       // Runtime errors
-      if (e.error) this._reportError(e, e.error);
+      if (e.error) this._reportError(e, e.error, "info");
 
       // Business errors
-      if (e.on) this._reportError(e, e.message);
+      if (e.on) this._reportError(e, e.message, "info");
 
       this.fire("execution-error", e.message);
       return e;
@@ -21092,11 +21092,13 @@ Polymer({
   },
 
   _reportError: function _reportError(e, message) {
+    var type = arguments.length <= 2 || arguments[2] === undefined ? "error" : arguments[2];
+
     this.editor.getSession().setAnnotations([{
       row: e.on.range.start.row,
       column: 0,
       text: message,
-      type: "error"
+      type: type
     }]);
   },
 

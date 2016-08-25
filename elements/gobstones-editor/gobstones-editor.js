@@ -90,10 +90,10 @@ Polymer({
       return this.parser.interpret(ast, initialState);
     } catch (e) {
       // Runtime errors
-      if (e.error) this._reportError(e, e.error);
+      if (e.error) this._reportError(e, e.error, "info");
 
       // Business errors
-      if (e.on) this._reportError(e, e.message);
+      if (e.on) this._reportError(e, e.message, "info");
 
       this.fire("execution-error", e.message);
       return e;
@@ -101,11 +101,13 @@ Polymer({
   },
 
   _reportError: function _reportError(e, message) {
+    var type = arguments.length <= 2 || arguments[2] === undefined ? "error" : arguments[2];
+
     this.editor.getSession().setAnnotations([{
       row: e.on.range.start.row,
       column: 0,
       text: message,
-      type: "error"
+      type: type
     }]);
   },
 
