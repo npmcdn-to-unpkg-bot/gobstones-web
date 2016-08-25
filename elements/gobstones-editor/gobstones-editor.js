@@ -8,6 +8,7 @@ Polymer({
     "iron-localstorage-load": "onLastCodeLoaded"
   },
   properties: {
+    codeWasLoaded: { type: Boolean, value: false },
     code: String
   },
 
@@ -41,7 +42,9 @@ Polymer({
   },
 
   onLastCodeLoaded: function onLastCodeLoaded() {
+    if (this.codeWasLoaded) return;
     this.editor.setValue(this.code);
+    this.codeWasLoaded = true;
   },
 
   onRunCode: function onRunCode() {
