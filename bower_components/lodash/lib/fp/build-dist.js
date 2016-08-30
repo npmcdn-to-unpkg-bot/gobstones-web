@@ -42,7 +42,6 @@ var mappingConfig = {
 /**
  * Creates browser builds of the FP converter and mappings at the `target` path.
  *
- * @private
  * @param {string} target The output directory path.
  */
 function build() {
